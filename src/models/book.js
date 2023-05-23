@@ -2,26 +2,36 @@ const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
 
-    rating : {type: number},
-    status: {
-        type: String,
-        enum: ['read', 'reading','want to read']
-      }
+    rating : {type: Number,default: null},
+    
       //userId
+      //userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+
     })
 
 const bookSchema = new mongoose.Schema({
 
-title : {type: string , require: true},
-description : {type: string , require: true},
-image : {type: string , require: true},
+title : {type: String , require: true},
+description : {type: String , require: true},
+image : {type: String , require: true},
 categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category",require: true},
-//AuthorId
-review :[reviewSchema]
+   //AuthorId : { type: mongoose.Schema.Types.ObjectId , ref:"author",require: true},
+
+review :[reviewSchema],
+statususers: 
+[{
+  status:{
+  type: String,
+  enum: ['read', 'reading','want to read']
+},
+  // userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+}]
+
 })
 
-const bookModel = mongoose.model("book",categorytSchema);
+const bookModel = mongoose.model("book",bookSchema);
 
 module.exports = bookModel;
 
 
+// bookModel.create()
