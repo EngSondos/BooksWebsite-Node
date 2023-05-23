@@ -14,10 +14,10 @@ app.listen(PORT,()=>{
 
 // index.js
 
+mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>
   console.log("Connected...")
 );
-
 dbNative = mongoose.connection.db;
 console.log(dbNative);
 
