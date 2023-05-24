@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     isAdmin: Boolean,
-    token: { type: String },
+   
 });
+const userModel = mongoose.model("user", userSchema); 
 
-module.exports = mongoose.model("user", userSchema);
 
 function userValidate(userSchema) {
     const schema = Joi.object({ username: Joi.string()  .required(),
@@ -23,6 +23,6 @@ function userValidate(userSchema) {
            
 }
 
-module.exports = { userValidate }
+module.exports = { userValidate , userModel }
 
 
