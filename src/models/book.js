@@ -23,7 +23,7 @@ statususers:
   type: String,
   enum: ['read', 'reading','want to read']
 },
-  // userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+  userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
 }]
 
 })
@@ -33,4 +33,3 @@ const bookModel = mongoose.model("book",bookSchema);
 module.exports = bookModel;
 
 
-// bookModel.create()
