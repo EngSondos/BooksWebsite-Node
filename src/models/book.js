@@ -28,8 +28,40 @@ statususers:
 
 })
 
+
+function bookValidate(bookSchema) {
+  const schema = Joi.object({ title: Joi.string()  .required()
+    .messages({
+      'string.empty': 'Title cannot be empty',
+      'any.required': 'Title is required'
+    })
+    ,
+    description : Joi.string().required(),
+    image: Joi.string(),
+    categoryId : Joi.ObjectId().required(),
+    AuthorId : Joi.ObjectId().required(),
+    review :
+      Joi.object({
+        rating : Joi.number().default(null),
+        userId : Joi.ObjectId().required(),
+        review: Joi.string().required(),
+
+      })
+    ,
+    statususers:
+      Joi.object({
+        status: Joi.string().valid('read','reading','want to read').required(),
+        userId: Joi.ObjectId().required()
+      })
+    
+
+
+   });
+   return schema.validate(bookSchema);
+         
+}
+
 const bookModel = mongoose.model("book",bookSchema);
 
-module.exports = bookModel;
-
+module.exports = {bookModel,bookValidate};
 
