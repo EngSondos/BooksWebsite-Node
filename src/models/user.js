@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
-
+const Joi = require('joi'); 
+const { boolean, bool } = require("joi/lib");
 const userSchema = new mongoose.Schema({
-    fullName: { type: String, required: true },
+    username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    isAdmin: false,
+    isAdmin: Boolean,
     token: { type: String },
 });
 
 module.exports = mongoose.model("user", userSchema);
+
+
+
