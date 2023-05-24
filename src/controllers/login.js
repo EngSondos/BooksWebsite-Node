@@ -23,7 +23,7 @@ async  function userLogin(req , res ) {
   const user = await userModel.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    // Create token
+    // // Create token
     // const token = jwt.sign(
     //   { user_id: user._id, email },
     //   process.env.TOKEN_KEY,
