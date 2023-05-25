@@ -40,22 +40,9 @@ function bookValidate(bookSchema) {
     image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
     AuthorId : Joi.ObjectId().required(),
-    review :
-      Joi.object({
-        rating : Joi.number().default(null),
-        userId : Joi.ObjectId().required(),
-        review: Joi.string().required(),
-
-      })
-    ,
-    statususers:
-      Joi.object({
-        status: Joi.string().valid('read','reading','want to read').required(),
-        userId: Joi.ObjectId().required()
-      })
+    review : Joi.object(),
+    statususers: Joi.object()
     
-
-
    });
    return schema.validate(bookSchema);
          
