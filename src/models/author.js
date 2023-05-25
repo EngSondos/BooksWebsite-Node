@@ -16,6 +16,6 @@ function authorValidation(authorSchema) {
     })
     return schema.validate(authorSchema); 
 }
-const AuthorModel = mongoose.model("author", authorSchema);
+const authorModel = mongoose.model('authors', authorSchema);
 
-module.exports = { AuthorModel,  authorValidation};
+module.exports = { authorModel,  authorValidation};

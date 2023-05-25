@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
+const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
+
 
 const reviewSchema = new mongoose.Schema({
 
     rating : {type: Number,default: null},
 
-      userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+      userId : { type: mongoose.Schema.Types.ObjectId , ref:"users",require: true},
       review:{type:String}
     })
 
@@ -13,9 +16,9 @@ const bookSchema = new mongoose.Schema({
 title : {type: String , require: true},
 description : {type: String , require: true},
 image : {type: String , require: true},
-categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category",require: true},
-   AuthorId : { type: mongoose.Schema.Types.ObjectId , ref:"author",require: true},
-
+categoryId : { type: mongoose.Schema.Types.ObjectId , ref:'categories'},
+authorId : { type: mongoose.Schema.Types.ObjectId , ref:'authors'},
+   
 review :[reviewSchema],
 statususers: 
 [{
@@ -23,7 +26,7 @@ statususers:
   type: String,
   enum: ['read', 'reading','want to read']
 },
-  userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+  userId : { type: mongoose.Schema.Types.ObjectId , ref:"users",require: true},
 }]
 
 })
@@ -38,24 +41,13 @@ function bookValidate(bookSchema) {
     ,
     description : Joi.string().required(),
     image: Joi.string(),
-    categoryId : Joi.ObjectId().required(),
-    AuthorId : Joi.ObjectId().required(),
-    review :
-      Joi.object({
-        rating : Joi.number().default(null),
-        userId : Joi.ObjectId().required(),
-        review: Joi.string().required(),
-
-      })
-    ,
-    statususers:
-      Joi.object({
-        status: Joi.string().valid('read','reading','want to read').required(),
-        userId: Joi.ObjectId().required()
-      })
+    categoryId : Joi.objectId().required(),
+    authorId :Joi.objectId().required(),
     
-
-
+    review :Joi.object()
+    ,
+    statususers:Joi.object()
+    
    });
    return schema.validate(bookSchema);
          
