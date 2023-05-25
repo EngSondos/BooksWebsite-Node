@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require("mongoose")
-
+const authorRouter = require('./src/routes/author')
 
 const app = express()
 app.use(express.json())
@@ -13,6 +13,7 @@ app.listen(PORT,()=>{
 })
 
 // index.js
+app.use('/author', authorRouter);
 
 mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>

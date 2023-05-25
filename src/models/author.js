@@ -10,12 +10,13 @@ const authorSchema = new mongoose.Schema ({
 
 function authorValidation(authorSchema) {
     const schema = Joi.object({
+            photo: Joi.string(),
             firstName: Joi.string() .required(),
             lastName: Joi.string() .required(),
             dateOfBirth: Joi.date(),
     })
     return schema.validate(authorSchema); 
 }
-const AuthorModel = mongoose.model("author", authorSchema);
+const AuthorModel = mongoose.model("authors", authorSchema);
 
 module.exports = { AuthorModel,  authorValidation};
