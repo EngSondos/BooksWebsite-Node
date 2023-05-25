@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require("mongoose")
+const categoryRouter = require('./src/routes/category')
 
 
 const app = express()
@@ -11,6 +12,9 @@ const PORT =5000
 app.listen(PORT,()=>{
     console.log("Listening...")
 })
+
+
+app.use('category',categoryRouter)
 
 // index.js
 
