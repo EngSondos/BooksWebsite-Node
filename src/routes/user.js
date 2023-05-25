@@ -1,36 +1,15 @@
 
 const express = require('express')
 const mongoose = require("mongoose");
-const {userModel ,userValidate } = require('../models/user');
+const { userModel, userValidate } = require('../models/user');
 const bcrypt = require('bcrypt');
 const { userRegister } = require('../controllers/register');
 const { userLogin } = require('../controllers/login');
+const admin = require('../../middelware/admin');
+const auth = require('../../middelware/auth');
 
-
-// const {userSchema, userValidate } = require("./src/models/user");
 
 const router = express.Router();
-
-
-// router.post('/' , (req , res)=>{
- 
-//     const {error} = userValidate(req.body)
-//     if (error) {
-//         return res.status(404).send(error.details[0].message)
-    
-//     }
- 
-//      res.send('kolo tmam') 
-
-
-
-// })
-
-router.post("/register", userRegister );
-  
-
-
-router.post("/login", userLogin);
-
-
-  module.exports = router;
+router.post("/register", admin, userRegister);
+router.post("/login", auth, userLogin);
+module.exports = router;

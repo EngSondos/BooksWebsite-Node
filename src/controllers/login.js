@@ -23,17 +23,17 @@ async  function userLogin(req , res ) {
   const user = await userModel.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    // // Create token
-    // const token = jwt.sign(
-    //   { user_id: user._id, email },
-    //   process.env.TOKEN_KEY,
-    //   {
-    //     expiresIn: "2h",
-    //   }
-    // );
+    // Create token
+    const token = jwt.sign(
+      { user_id: user._id, email },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
 
-    // // save user token
-    // user.token = token;
+    // save user token
+    user.token = token;
 
     // user
     res.status(200).json(user);
