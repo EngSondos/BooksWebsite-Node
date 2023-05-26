@@ -3,7 +3,8 @@ const express = require('express')
 const mongoose = require("mongoose");
 const {userModel ,userValidate } = require('../models/user');
 const bcrypt = require('bcrypt');
-
+require("dotenv").config();
+const jwt = require('jsonwebtoken'); 
 
 async  function userLogin(req , res ) {
    
@@ -25,7 +26,7 @@ async  function userLogin(req , res ) {
   if (user && (await bcrypt.compare(password, user.password))) {
     // Create token
     const token = jwt.sign(
-      { user_id: user._id, email },
+      { user_id: user._id, email , password },
       process.env.TOKEN_KEY,
       {
         expiresIn: "2h",
@@ -33,8 +34,10 @@ async  function userLogin(req , res ) {
     );
 
     // save user token
-    user.token = token;
-
+     user.token = token;
+    // res.json({
+    //   token : token
+    // })
     // user
     res.status(200).json(user);
   }
