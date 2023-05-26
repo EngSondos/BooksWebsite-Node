@@ -5,6 +5,8 @@ const {userModel ,userValidate } = require('../models/user');
 const bcrypt = require('bcrypt');
 require("dotenv").config();
 const jwt = require('jsonwebtoken'); 
+const admin = require('../../middelware/admin');
+
 
 async  function userLogin(req , res ) {
    
@@ -16,20 +18,20 @@ async  function userLogin(req , res ) {
         return res.status(404).send(error.details[0].message)
     }
   // Get user input
-  const { email, password } = req.body;
+  const {username, email, password  } = req.body;
 
   
 
   // Validate if user exist in our database
-  const user = await userModel.findOne({ email });
-
+  const user = await userModel.findOne({ email , username  });
+ 
   if (user && (await bcrypt.compare(password, user.password))) {
     // Create token
     const token = jwt.sign(
-      { user_id: user._id, email , password },
+      { user_id: user._id, email , password  },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "2h",
+        expiresIn: "1h",
       }
     );
 
