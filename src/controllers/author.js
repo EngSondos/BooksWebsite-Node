@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {AuthorModel, authorValidation} = require ('../models/author')
-
-
+const fs = require('fs');
+const { deleteimage } = require('../media/media')
+const {bookModel}  = require('../models/book')
 
 function getAllAuthors (req, res) {
     AuthorModel.find({}, (err, authorList)=> {
@@ -23,7 +24,16 @@ function addAuthor(req, res) {
         if (error) {
         return res.status(404).send(error.details[0].message)
     }
-        AuthorModel.create({ ...req.body }, (err, newAuthId) => {
+    let newAuthor ={
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        dateOfBirth: req.body.dateOfBirth,
+    }
+    if(req.file)
+    {
+        newAuthor['image']=req.file.filename
+    }
+        AuthorModel.create( newAuthor , (err, newAuthId) => {
         return res.status(200).json(newAuthId)
     })
 }
@@ -37,7 +47,7 @@ function updateAuthor(req, res) {
     }
     AuthorModel.findByIdAndUpdate(id,
         {
-        photo:req.body.photo,
+        image:req.body.image,
         firstName:req.body.firstName,
         lastName: req.body.lastName,
         dateOfBirth: req.body.dateOfBirth,
@@ -46,11 +56,39 @@ function updateAuthor(req, res) {
     })
 }
 
-function deleteAuthor(req, res) {
+async function checkAuthorexistence(req, res) {
     const { id } = req.params
-    AuthorModel.findOneAndDelete(id, (err, delAuthor) => {
+    bookModel.findOne({ AuthorId: id }, (err, book) => {
+        if (err) {
+            return res.json({ Error: "DB Error"})
+        } else if (!book) {
+            console.log(book);
+            delAuthor(id, res)
+        } else {
+            return res.json({Error:"There's is abook related to this author, you can't delete this author"})
+        }
+    });
+
+async function delAuthor(id, res) {
+    const oldAuthor = await findAuthor(id)
+
+if(!oldAuthor){
+        return res.json({Error:"Author not found in the database"})
+}
+
+if(oldAuthor.image){
+    // console.log(oldAuthor.image);
+    deleteimage(oldAuthor)
+}
+    AuthorModel.deleteOne({_id:id}, (err, delAuthor) => {
         return res.status(200).json(delAuthor)
     })
 }
+} 
 
-module.exports = {getAllAuthors, getAuthorById, addAuthor, updateAuthor, deleteAuthor}
+async function findAuthor(id) {
+    const author = await AuthorModel.findOne({_id:id})
+    return author;
+}
+
+module.exports = {getAllAuthors, getAuthorById, addAuthor, updateAuthor, checkAuthorexistence}

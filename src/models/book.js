@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
 title : {type: String , require: true},
 description : {type: String , require: true},
 image : {type: String , require: true},
-categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category",require: true},
+categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category"},
    AuthorId : { type: mongoose.Schema.Types.ObjectId , ref:"author",require: true},
 
 review :[reviewSchema],
