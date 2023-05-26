@@ -58,7 +58,6 @@ function bookValidate(bookSchema) {
 
 
 
-
 function reviewValidate(reviewSchema) {
   const schema = Joi.object({ 
           rating: Joi.number().integer().min(1).max(5),
