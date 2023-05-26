@@ -1,16 +1,10 @@
 const mongoose = require('mongoose');
 
 const Joi = require('joi')
-Joi.objectId = require('joi-objectid')(Joi);
+Joi.ObjectId = require('joi-objectid')(Joi);
 
 
-const reviewSchema = new mongoose.Schema({
 
-    rating : {type: Number,default: null},
-
-      userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
-      review:{type:String}
-    })
 
 const bookSchema = new mongoose.Schema({
 
@@ -20,7 +14,17 @@ image : {type: String , require: true},
 categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category",require: true},
    AuthorId : { type: mongoose.Schema.Types.ObjectId , ref:"author",require: true},
 
-review :[reviewSchema],
+review :[
+
+  {
+
+
+    rating : {type: Number,default: null},
+
+      userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+      review:{type:String}
+    }
+],
 statususers: 
 [{
   status:{
@@ -52,7 +56,21 @@ function bookValidate(bookSchema) {
          
 }
 
+function reviewValidate(reviewSchema) {
+  const schema = Joi.object({ 
+          rating: Joi.number().integer().min(1).max(5),
+           userId: Joi.ObjectId(),
+          review: Joi.string().required(),
+    
+   });
+   return schema.validate(reviewSchema);
+         
+}
+
+
+
+
 const bookModel = mongoose.model("book",bookSchema);
 
-module.exports = {bookModel,bookValidate};
+module.exports = {bookModel,bookValidate,reviewValidate};
 
