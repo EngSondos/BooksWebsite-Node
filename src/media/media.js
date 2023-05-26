@@ -1,4 +1,5 @@
 const multer = require('multer');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -10,4 +11,14 @@ const storage = multer.diskStorage({
   });
 const upload = multer({ storage: storage });
 
-module.exports=upload
+function deleteimage(model){
+  if(model.image){
+      fs.unlink(`assets/${model.image}`,(err)=>{
+          if(err){
+              return false
+          }
+          return true
+      })
+}
+}
+module.exports={upload,deleteimage}

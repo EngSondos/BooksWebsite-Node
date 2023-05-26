@@ -1,7 +1,7 @@
 let express = require('express')
 let router = express.Router()
 let BookController = require('../controllers/bookController')
-const upload = require('../media/media')
+const {upload} = require('../media/media')
 
 router.get('/',BookController.getBooks)
 router.get('/:id',BookController.getBook)

@@ -1,6 +1,6 @@
 module.exports = {getBooks,getBook,addBook,updateBook,deleteBook}
 const {bookModel,bookValidate}  = require('../models/book')
-const fs = require('fs');
+const {deleteimage}=require('../media/media')
 
 function getBooks(request,respone)
 {
@@ -29,7 +29,6 @@ function getBook(request,respone)
 
 function addBook(request,respone)
 {
-    // console.log(bookValidate({...request.body}).error)
     const {error}= bookValidate({...request.body})
     if(error)
     {
@@ -48,15 +47,17 @@ function addBook(request,respone)
     bookModel.create(newBook,(error,BookData)=>{
         console.log(BookData)
         if(!error){
-           return respone.json({"message":"Book Created Successfully"})
+           return respone.json(BookData)
         }else
         respone.json(error)
     })
 }
 
-function updateBook(request,respone)
+async function updateBook(request,respone)
 {
     let {id} =request.params
+    const oldbook =  await findBook(id)
+
    if(!oldbook){
         return respone.json({"message":"This book Is Not in DB"})
    }
@@ -67,12 +68,14 @@ function updateBook(request,respone)
         categoryId: request.body.categoryId,
     }
   
-    if(request.file)
-        
-            findBook(id)
-
-    // else 
-    //          newBook['image']=oldbook.image
+    if(request.file){
+        if(oldbook.image){
+            deleteimage(oldbook)
+        }
+        newBook['image']=request.file.filename
+    }
+    else if(oldbook.image)
+             newBook['image']=oldbook.image
         
    
 
@@ -84,15 +87,19 @@ function updateBook(request,respone)
     })
 }
 
-function deleteBook(request,respone)
+async function deleteBook(request,respone)
 {
     let {id}= request.params
-    let oldbook = findBook(id)
+    let oldbook = await findBook(id)
+
    if(!oldbook){
         return respone.json({"message":"This book Is Not in DB"})
    }
-//    console.log(oldbook)
-//    deleteimage(oldbook);
+
+   if(oldbook.image){
+    deleteimage(oldbook)
+   }
+
     bookModel.deleteOne({_id:id},(error)=>{
         if(!error){
             return respone.json({"message":"Book Deleted Successfully"})
@@ -101,25 +108,9 @@ function deleteBook(request,respone)
     })
 }
 
-function findBook(id)
+async function findBook(id) 
 {
-    bookModel.findById(id, (err, book) => {
-        if (err) 
-          return false
-        else {
-        deleteimage(book);
-        }
-      });
+  const book = await bookModel.findOne({_id:id})
+  return book;
 }
 
-function deleteimage(book){
-    if(book.image){
-        fs.unlink(`assets/${book.image}`,(err)=>{
-            if(err){
-                console.log(err)
-                return false
-            }
-            return true
-        })
-}
-}
