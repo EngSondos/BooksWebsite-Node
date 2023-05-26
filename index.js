@@ -1,8 +1,12 @@
 const express = require('express')
 const mongoose = require("mongoose")
 const bookRouter = require('./src/routes/book')
+const mybookRouter = require('./src/routes/userBook')
+
 const {authorModel}= require('./src/models/author')
 const {categoryModel}= require('./src/models/category')
+const {userModel}= require('./src/models/user')
+
 
 const app = express()
 app.use(express.json())
@@ -10,6 +14,8 @@ app.use(express.json())
 
 
 app.use('/book',bookRouter)
+app.use('/mybooks',mybookRouter)
+
 
 const PORT =5050
 
@@ -19,7 +25,7 @@ app.listen(PORT,()=>{
 
 // index.js
 app.post("/",(request,respone)=>{
-    authorModel.create({...request.body},(error,BookData)=>{
+    userModel.create({...request.body},(error,BookData)=>{
     console.log(BookData)
     if(!error){
     return respone.json({"message":"Book Created Successfully"})
