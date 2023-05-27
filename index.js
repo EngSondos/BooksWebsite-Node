@@ -2,13 +2,24 @@ const express = require('express')
 const mongoose = require("mongoose")
 const reviewRouter = require('./src/routes/review')
 const categoryRouter = require('./src/routes/category')
+const bookRouter = require('./src/routes/book')
+const mybookRouter = require('./src/routes/userBook')
+
+const {authorModel}= require('./src/models/author')
+const {categoryModel}= require('./src/models/category')
+const {userModel}= require('./src/models/user')
 
 
 const app = express()
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 
-const PORT =5000
+app.use('/book',bookRouter)
+app.use('/mybooks',mybookRouter)
+
+
+const PORT =5050
 
 app.listen(PORT,()=>{
     console.log("Listening...")
@@ -20,14 +31,11 @@ app.use('/book',reviewRouter)
 
 
 
-// index.js
-
 mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>
-  console.log("Connected...")
+console.log("Connected...")
 );
-dbNative = mongoose.connection.db;
-console.log(dbNative);
+
 
 
 

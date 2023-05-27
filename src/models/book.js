@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Joi = require('joi')
+// Joi.objectId = require('joi-objectid')(Joi)
+
 
 const Joi = require('joi')
 Joi.ObjectId = require('joi-objectid')(Joi);
@@ -29,7 +32,7 @@ statususers:
   type: String,
   enum: ['read', 'reading','want to read']
 },
-  userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+  userId : { type: mongoose.Schema.Types.ObjectId , ref:"users",require: true},
 }]
 
 })
@@ -68,14 +71,15 @@ function reviewValidate(reviewSchema) {
    return schema.validate(reviewSchema);
          
 }
-
-
-
-
-
+function statusValidate(statusSchema) {
+  const schema = Joi.object({ status: Joi.string()  .required().valid('read','want to read','reading')
+    // ,userId:Joi.objectId().required()
+    
+   });
+   return schema.validate(statusSchema);
+         
+}
 const bookModel = mongoose.model("book",bookSchema);
 
-
-
-module.exports = {bookModel,bookValidate,reviewValidate};
+module.exports = {bookModel,bookValidate,statusValidate,reviewValidate};
 
