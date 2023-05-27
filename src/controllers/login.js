@@ -36,16 +36,16 @@ async  function userLogin(req , res ) {
     );
 
     // save user token
-     user.token = token;
-    // res.json({
-    //   token : token
-    // })
+    //  user.token = token;
+   return res.json({
+      token : token
+    })
     // user
-    res.status(200).json(user);
+    // res.status(200).json(user);
   }
-  res.status(400).send("Invalid Credentials");
+return   res.status(400).send("Invalid Credentials ");
 } catch (err) {
-  console.log(err);
+ return  console.log(err);
 }
 // Our register logic ends here
 }
