@@ -28,7 +28,7 @@ function getuserBooksbyStatus(request,respone)
        
 }
 
-function addStatus(request,respone){
+async function addStatus(request,respone){
   
   const {error}= statusValidate({...request.body})
   if(error)
@@ -38,6 +38,12 @@ function addStatus(request,respone){
     const {userId} = request.params 
     const {status} =request.body 
     const {bookId} =request.params
+    const userStatus = await bookModel.findOne({'statususers.userId': userId ,_id:bookId});
+    if(userStatus)
+    {
+     return await updateStatus(request,respone)
+    }
+
     bookModel.updateOne(
       { _id:bookId},
       { $push: { statususers: { userId: userId, status: status } } }
