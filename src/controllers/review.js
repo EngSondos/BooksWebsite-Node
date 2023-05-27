@@ -3,43 +3,45 @@ const {bookModel,reviewValidate} = require('../models/book')
 
 
 
-
-
-
-
-
-
 async function addReview(req, res) {
 
 
         
-    const bookId = req.params.id;
-    const userId = req.params.userId;
-    const { rating, review } = req.body;
+  const bookId = req.params.id;
+  const userId = req.params.userId;
+  const { rating, review } = req.body;
 
 
-    const { error } = reviewValidate({ rating, review });
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-  
-    const book = await bookModel.findOneAndUpdate(
-      { _id: bookId, "review.userId": userId },
-      {
-        $set: {
-          "review.$": { rating, review, userId },
-        },
-      },
-      { new: true }
-    ).populate('review.userId')
-    .then(result=>{
-        res.json(result)
-        console.log(`${result} review added`)
-    })
-    .catch(err=>{
-        console.error(err)
-    })
+  const { error } = reviewValidate({ rating, review });
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
   }
+
+
+  const userreview = await bookModel.findOne({'reviews.userId': userId ,_id:bookId});
+    if(userreview)
+    {
+     return await updateReviewByUserId(req,res)
+    }
+
+
+       bookModel.updateOne(
+    { _id: bookId, "reviews.userId": userId },
+    {
+      $push: {
+        reviews: { rating, review, userId },
+      },
+    },
+  ).populate('reviews.userId')
+  .then(result=>{
+      res.json(result)
+      console.log(`${result}`)
+  })
+  .catch(err=>{
+      console.error(err)
+  })
+}
+
 
 
 
@@ -54,21 +56,20 @@ if (error) {
   return res.status(400).json({ error: error.details[0].message });
 }
 
- bookModel.findOneAndUpdate(
+ bookModel.updateOne(
   
-    {_id:bookId},
-    {$push:{review:{rating:rating,userId:userId,review:review}}}
-).populate('review.userId')
+  { 'reviews': { $elemMatch: { 'userId': userId } } ,_id:bookId}, 
+  {$set:{reviews:{rating:rating,userId:userId,review:review}}}
+).populate('reviews.userId')
 
 .then(result=>{
     res.json(result)
-    console.log(`${result} review updated`)
+    console.log(`${result}`)
 })
 .catch(err=>{
     console.error(err)
 })
 }
-
 
 
 

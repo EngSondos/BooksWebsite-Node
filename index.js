@@ -16,7 +16,7 @@ app.listen(PORT,()=>{
 
 
 app.use('/category',categoryRouter)
-app.use('/book',reviewRouter)
+app.use('/review',reviewRouter)
 
 
 
