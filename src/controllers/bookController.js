@@ -6,10 +6,10 @@ function getBooks(request,respone)
 {
    const books= bookModel.find({},(error,BookList)=>{
         if(!error){
-            respone.json(BookList)
+            return respone.json(BookList)
         }else
-         respone.json(error)
-       }).populate(['authorId','categoryId']) 
+        return respone.json(error)
+       }).populate(['authorId','categoryId'])
        
 }
 
@@ -22,7 +22,7 @@ function getBook(request,respone)
             respone.json(BookData)
         }else
          respone.json(error)
-        }).populate(['authorId','categoryId','review'])
+        }).populate(['authorId','categoryId'])
 
 
 }

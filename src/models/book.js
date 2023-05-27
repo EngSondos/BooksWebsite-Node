@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 const Joi = require('joi')
-// Joi.objectId = require('joi-objectid')(Joi)
-
-
-const Joi = require('joi')
 Joi.ObjectId = require('joi-objectid')(Joi);
 
 
@@ -12,8 +8,8 @@ const bookSchema = new mongoose.Schema({
 title : {type: String , require: true},
 description : {type: String , require: true},
 image : {type: String , require: true},
-categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"category",require: true},
-   AuthorId : { type: mongoose.Schema.Types.ObjectId , ref:"author",require: true},
+categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"categories",require: true},
+   authorId : { type: mongoose.Schema.Types.ObjectId , ref:"authors",require: true},
 
 review :[
 
@@ -22,7 +18,7 @@ review :[
 
     rating : {type: Number,default: null},
 
-      userId : { type: mongoose.Schema.Types.ObjectId , ref:"user",require: true},
+      userId : { type: mongoose.Schema.Types.ObjectId , ref:"users",require: true},
       review:{type:String}
     }
 ],
@@ -48,7 +44,7 @@ function bookValidate(bookSchema) {
     description : Joi.string().required(),
     image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
-    AuthorId : Joi.ObjectId().required(),
+    authorId : Joi.ObjectId().required(),
      review : Joi.object(),
     statususers: Joi.object()
     
@@ -57,29 +53,22 @@ function bookValidate(bookSchema) {
          
 }
 
-
-
-
-
 function reviewValidate(reviewSchema) {
   const schema = Joi.object({ 
           rating: Joi.number().integer().min(1).max(5),
            userId: Joi.ObjectId(),
-          review: Joi.string().required(),
-    
+          review: Joi.string(),
    });
    return schema.validate(reviewSchema);
          
 }
 function statusValidate(statusSchema) {
-  const schema = Joi.object({ status: Joi.string()  .required().valid('read','want to read','reading')
-    // ,userId:Joi.objectId().required()
-    
+  const schema = Joi.object({ status: Joi.string()  .required().valid('read','want to read','reading')    
    });
    return schema.validate(statusSchema);
          
 }
-const bookModel = mongoose.model("book",bookSchema);
+const bookModel = mongoose.model("books",bookSchema);
 
 module.exports = {bookModel,bookValidate,statusValidate,reviewValidate};
 
