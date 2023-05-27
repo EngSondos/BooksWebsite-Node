@@ -84,6 +84,26 @@ function deleteCategory(req,res) {
     });
   }
   
+  function categoriesbooks(req,res){
+
+    const { id } = req.params;
+   bookModel.find({ categoryId: id },(error,books)=>{
+
+    if (error) {
+      return res.json(error);
+    }
+
+      if (!books) {
+                return res.status(404).json({ message: 'No books found in this category' });
+              }
+              return res.status(200).json(books)
+            }).populate('categoryId')
+          
+
+          }
 
 
-module.exports={addCategory,getCategories,getCategory,updateCategory,deleteCategory}
+
+
+
+module.exports={addCategory,getCategories,getCategory,updateCategory,deleteCategory,categoriesbooks}
