@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi')
-Joi.objectId = require('joi-objectid')(Joi)
+// Joi.objectId = require('joi-objectid')(Joi)
 
 
 const reviewSchema = new mongoose.Schema({
@@ -41,8 +41,8 @@ function bookValidate(bookSchema) {
     ,
     description : Joi.string().required(),
     image: Joi.string(),
-    categoryId : Joi.objectId().required(),
-    authorId :Joi.objectId().required(),
+    // categoryId : Joi.objectId().required(),
+    // authorId :Joi.objectId().required(),
     
     review :Joi.object()
     ,
@@ -52,8 +52,15 @@ function bookValidate(bookSchema) {
    return schema.validate(bookSchema);
          
 }
-
+function statusValidate(statusSchema) {
+  const schema = Joi.object({ status: Joi.string()  .required().valid('read','want to read','reading')
+    // ,userId:Joi.objectId().required()
+    
+   });
+   return schema.validate(statusSchema);
+         
+}
 const bookModel = mongoose.model("book",bookSchema);
 
-module.exports = {bookModel,bookValidate};
+module.exports = {bookModel,bookValidate,statusValidate};
 

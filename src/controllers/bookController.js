@@ -9,7 +9,7 @@ function getBooks(request,respone)
             respone.json(BookList)
         }else
          respone.json(error)
-       }).populate(['authorId','categoryId'])
+       }).populate(['authorId','categoryId']) 
        
 }
 
@@ -22,7 +22,7 @@ function getBook(request,respone)
             respone.json(BookData)
         }else
          respone.json(error)
-        }).populate(['authorId','categoryId'])
+        }).populate(['authorId','categoryId','review'])
 
 
 }
@@ -55,6 +55,7 @@ function addBook(request,respone)
 
 async function updateBook(request,respone)
 {
+  
     let {id} =request.params
     const oldbook =  await findBook(id)
 

@@ -1,5 +1,5 @@
 module.exports = {getuserBooks,updateStatus,addStatus,getuserBooksbyStatus}
-const {bookModel, bookValidate}  = require('../models/book')
+const {bookModel, statusValidate}  = require('../models/book')
 
 function getuserBooks(request,respone)
 {
@@ -16,6 +16,7 @@ function getuserBooks(request,respone)
 }
 function getuserBooksbyStatus(request,respone)
 {
+  
   const {userId} = request.params
   const{status} = request.params 
     bookModel.find( { 'statususers': { $elemMatch: { 'userId': userId,'status':status } }},(error,bookList)=>{
@@ -28,11 +29,17 @@ function getuserBooksbyStatus(request,respone)
 }
 
 function addStatus(request,respone){
-    const {userId} = request.params //'user_id_to_update'; // replace with the actual user ID
-    const {status} =request.body //'reading'; // replace with the new status value
+  
+  const {error}= statusValidate({...request.body})
+  if(error)
+  {
+      return respone.json({error:error})
+  }
+    const {userId} = request.params 
+    const {status} =request.body 
     const {bookId} =request.params
     bookModel.updateOne(
-      { _id:bookId}, // filter to find the matching statususer
+      { _id:bookId},
       { $push: { statususers: { userId: userId, status: status } } }
       )
       .then(result => {
@@ -45,6 +52,12 @@ function addStatus(request,respone){
 }
 
 function updateStatus(request,respone){
+
+  const {error}= statusValidate({...request.body})
+  if(error)
+  {
+      return respone.json({error:error})
+  }
     const {userId} = request.params 
     const {status} =request.body 
     const {bookId} =request.params
