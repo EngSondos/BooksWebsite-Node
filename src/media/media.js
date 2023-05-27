@@ -11,6 +11,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+
+
 function deleteimage(model){
     if(model.image){
         fs.unlink(`assets/${model.image}`,(err)=>{

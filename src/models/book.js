@@ -61,7 +61,7 @@ function bookValidate(bookSchema) {
          
 }
 
-const bookModel = mongoose.model("book",bookSchema);
+const bookModel = mongoose.model("books",bookSchema);
 
 module.exports = {bookModel,bookValidate};
 

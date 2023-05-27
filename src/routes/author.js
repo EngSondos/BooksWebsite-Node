@@ -7,8 +7,7 @@ const {upload } = require('../media/media')
 router.get('/', getAllAuthors)
 router.get('/:id', getAuthorById)
 router.post('/', upload.single("image"),addAuthor)
-// router.post('/', addAuthor)
-router.put('/:id', updateAuthor)
+router.put('/:id', upload.single("image"), updateAuthor)
 router.delete('/:id', checkAuthorexistence)
 
 module.exports = router

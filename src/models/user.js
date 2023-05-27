@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     token: { type: String },
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("users", userSchema);
 
 function userValidate(userSchema) {
     const schema = Joi.object({ username: Joi.string()  .required(),
