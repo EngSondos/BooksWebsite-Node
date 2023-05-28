@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const {AuthorModel, authorValidation} = require ('../models/author')
+const {authorModel, authorValidation} = require ('../models/author')
 const fs = require('fs');
 const { deleteimage } = require('../media/media')
 const {bookModel}  = require('../models/book')
 
 /////////////////////// GETTING ALL AUTHORS //////////////////////
 function getAllAuthors (req, res) {
-    AuthorModel.find({}, (err, authorList)=> {
+    authorModel.find({}, (err, authorList)=> {
         return res.status(200).json(authorList)
     })
 }
@@ -15,7 +15,7 @@ function getAllAuthors (req, res) {
 /////////////////////// GETTING AUTHOR BY ID //////////////////////
 function getAuthorById(req, res) {
     const { id } = req.params
-    AuthorModel.findById(id, (err, authorId)=> {
+    authorModel.findById(id, (err, authorId)=> {
         return res.status(200).json(authorId)
     })
 }
@@ -37,7 +37,7 @@ function addAuthor(req, res) {
         {
             newAuthor['image']=req.file.filename
         }
-    AuthorModel.create( newAuthor , (err, newAuthId) => {
+    authorModel.create( newAuthor , (err, newAuthId) => {
     return res.status(200).json(newAuthId)
     })
 }
@@ -73,7 +73,7 @@ async function updateAuthor(req, res) {
         newAuthor['image']=oldAuthor.image
     }
     
-    AuthorModel.findByIdAndUpdate(id,
+    authorModel.findByIdAndUpdate(id,
     newAuthor, (err) => {
     return res.status(200).json(newAuthor)
     })
@@ -108,7 +108,7 @@ if(oldAuthor.image){
 }
 
 ////////////// Deletig the author  //////////////////
-    AuthorModel.deleteOne({_id:id}, (err, delAuthor) => {
+    authorModel.deleteOne({_id:id}, (err, delAuthor) => {
         if (!err) return res.status(200).json(delAuthor)
         // return res.status(500).json({Error: "can't delete this author"})
     })
@@ -116,7 +116,7 @@ if(oldAuthor.image){
 } 
 
 async function findAuthor(id) {
-    const author = await AuthorModel.findOne({_id:id})
+    const author = await authorModel.findOne({_id:id})
     return author;
 }
 
