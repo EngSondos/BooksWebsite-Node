@@ -6,7 +6,6 @@ Joi.ObjectId = require('joi-objectid')(Joi);
 const bookSchema = new mongoose.Schema({
 
 title : {type: String , require: true},
-description : {type: String , require: true},
 image : {type: String , require: true},
 categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"categories",require: true},
    authorId : { type: mongoose.Schema.Types.ObjectId , ref:"authors",require: true},
@@ -41,7 +40,6 @@ function bookValidate(bookSchema) {
       'any.required': 'Title is required'
     })
     ,
-    description : Joi.string().required(),
     image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
     authorId : Joi.ObjectId().required(),

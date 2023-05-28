@@ -47,9 +47,9 @@ function addBook(request,respone)
     bookModel.create(newBook,(error,BookData)=>{
         console.log(BookData)
         if(!error){
-           return respone.json(BookData)
+           return respone.json({"message":"Book Created Successfully"})
         }else
-        respone.json(error)
+        respone.json({"erorr":error})
     })
 }
 
