@@ -49,9 +49,10 @@ function reviewValidate(reviewSchema) {
   const schema = Joi.object({ 
           rating: Joi.number().integer().min(1).max(5),
            userId: Joi.ObjectId(),
-          review: Joi.string(),
+          review: Joi.string()
+  })
    return schema.validate(reviewSchema);
-         
+       
 }
 function statusValidate(statusSchema) {
   const schema = Joi.object({ status: Joi.string()  .required().valid('read','want to read','reading')    
