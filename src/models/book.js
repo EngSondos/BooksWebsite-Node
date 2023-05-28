@@ -11,7 +11,7 @@ image : {type: String , require: true},
 categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"categories",require: true},
    authorId : { type: mongoose.Schema.Types.ObjectId , ref:"authors",require: true},
 
-review :[
+reviews :[
 
   {
 
@@ -45,7 +45,7 @@ function bookValidate(bookSchema) {
     image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
     authorId : Joi.ObjectId().required(),
-     review : Joi.object(),
+     reviews : Joi.object(),
     statususers: Joi.object()
     
    });
