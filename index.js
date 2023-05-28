@@ -5,10 +5,11 @@ const categoryRouter = require('./src/routes/category')
 const bookRouter = require('./src/routes/book')
 const {categoryModel} =require('./src/models/category')
 const {authorModel} =require('./src/models/author')
-
-
+const users = require("./src/routes/user")
 const app = express()
 app.use(express.json())
+
+//for images 
 app.use('/assets', express.static('assets'));
 
 
@@ -33,26 +34,17 @@ app.listen(PORT,()=>{
 app.use('/category',categoryRouter)
 app.use('/review',reviewRouter)
 app.use('/book',bookRouter)
-
+app.use('/author', authorRouter);
+app.use('/',users);
 
 
 
 // index.js
-app.use('/author', authorRouter);
-
-// app.post("/",(req,res)=>{
-//     bookModel.create({...req.body},(error,BookData)=>{
-//     console.log(BookData)
-//     if(!error){
-//     return res.json({"message":"Book Created Successfully"})
-//     }else
-//     res.json(error)
-//     })
-//     })
 
 mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>
   console.log("Connected...")
 );
-dbNative = mongoose.connection.db;
-console.log(dbNative);
+
+// app.use('/login',users);
+

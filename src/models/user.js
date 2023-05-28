@@ -2,18 +2,18 @@ const mongoose = require("mongoose");
 const Joi = require('joi'); 
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true },
+    username: { type: String },
     email: { type: String, required: true },
     password: { type: String, required: true },
     isAdmin: Boolean,
-    token: { type: String },
+   
 });
 
 const userModel = mongoose.model("users", userSchema);
 
 function userValidate(userSchema) {
     const schema = Joi.object({ username: Joi.string()  .required(),
-        email: Joi.string()  .required() .email(),
+        email: Joi.string()  .required() .email() ,
         password: Joi.string()  .required()   .pattern(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=(.*[`!@#$%\^&*\-_=\+'/\.,]){1}).{8,}$/))
         .message({"string.pattern.base":"password must have at least 8 characters , contains at least one lowercase - 1 uppercase - 1 digit ,and 1 special character"})
      });
