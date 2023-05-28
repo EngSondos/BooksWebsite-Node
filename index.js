@@ -19,6 +19,10 @@ app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   });
+const authorRouter = require('./src/routes/author')
+const {bookModel}  = require('./src/models/book')
+
+
 const PORT =5000
 
 app.listen(PORT,()=>{
@@ -34,6 +38,17 @@ app.use('/book',bookRouter)
 
 
 // index.js
+app.use('/author', authorRouter);
+
+// app.post("/",(req,res)=>{
+//     bookModel.create({...req.body},(error,BookData)=>{
+//     console.log(BookData)
+//     if(!error){
+//     return res.json({"message":"Book Created Successfully"})
+//     }else
+//     res.json(error)
+//     })
+//     })
 
 mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>
@@ -41,7 +56,3 @@ mongoose.connect("mongodb://127.0.0.1:27017/BookDb", () =>
 );
 dbNative = mongoose.connection.db;
 console.log(dbNative);
-
-
-
-

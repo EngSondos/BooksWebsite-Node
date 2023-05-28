@@ -10,6 +10,7 @@ const authorSchema = new mongoose.Schema ({
 
 function authorValidation(authorSchema) {
     const schema = Joi.object({
+            image: Joi.string(),
             firstName: Joi.string() .required(),
             lastName: Joi.string() .required(),
             dateOfBirth: Joi.date(),
