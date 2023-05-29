@@ -38,7 +38,8 @@ function addAuthor(req, res) {
             newAuthor['image']=req.file.filename
         }
     AuthorModel.create( newAuthor , (err, newAuthId) => {
-    return res.status(200).json(newAuthId)
+    // return res.status(200).json(newAuthId)
+    return res.status(200).json({message: "Author Added successfully"})
     })
 }
 
@@ -109,7 +110,8 @@ if(oldAuthor.image){
 
 ////////////// Deletig the author  //////////////////
     AuthorModel.deleteOne({_id:id}, (err, delAuthor) => {
-        if (!err) return res.status(200).json(delAuthor)
+        // if (!err) return res.status(200).json(delAuthor)
+        if (!err) return res.status(200).json({message: "Author deleted successfully"})
         // return res.status(500).json({Error: "can't delete this author"})
     })
 }
