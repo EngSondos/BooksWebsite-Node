@@ -34,7 +34,6 @@ function bookValidate(bookSchema) {
       'any.required': 'Title is required'
     })
     ,
-    image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
     authorId : Joi.ObjectId().required(),
      reviews : Joi.object(),
