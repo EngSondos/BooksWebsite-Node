@@ -18,12 +18,12 @@ async  function userLogin(req , res ) {
         return res.status(404).send(error.details[0].message)
     }
   // Get user input
-  const {username, email, password  } = req.body;
+  const { email, password  } = req.body;
 
   
 
   // Validate if user exist in our database
-  const user = await userModel.findOne({ email , username  });
+  const user = await userModel.findOne({ email   });
  
   if (user && (await bcrypt.compare(password, user.password))) {
     // Create token
@@ -37,9 +37,13 @@ async  function userLogin(req , res ) {
 
     // save user token
     //  user.token = token;
-   return res.json({
-      token : token
-    })
+    res.status(200).json({
+      idToken: token, 
+      expiresIn: '1h'
+    });
+  //  return res.json({
+  //     token : token
+  //   })
     // user
     // res.status(200).json(user);
   }
