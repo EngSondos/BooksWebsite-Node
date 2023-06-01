@@ -38,7 +38,10 @@ function addAuthor(req, res) {
             newAuthor['image']=req.file.filename
         }
     authorModel.create( newAuthor , (err, newAuthId) => {
-    return res.status(200).json(newAuthId)
+    // return res.status(200).json(newAuthId)
+    if (!err) return res.status(200).json({message: "Author Added successfully"})
+            else {return res.status(500).json({message: "Error adding this user"})
+            }
     })
 }
 
@@ -53,7 +56,7 @@ async function updateAuthor(req, res) {
     
     const oldAuthor = await findAuthor(id)
         if(!oldAuthor){
-                return res.json({Error:"Author not found in the database"})
+                return res.json({message:"Author not found in the database"})
         }
 
     let newAuthor ={
@@ -75,7 +78,10 @@ async function updateAuthor(req, res) {
     
     authorModel.findByIdAndUpdate(id,
     newAuthor, (err) => {
-    return res.status(200).json(newAuthor)
+    if (!err) { return res.status(200).json({message: "Author updated successfully"}) }
+    else {
+        return res.status(500).json({error: "Error updating this author"})
+    }
     })
 }
 
@@ -83,14 +89,14 @@ async function updateAuthor(req, res) {
 async function checkAuthorexistence(req, res) {
 ////////////// Checking if the author has abook in database //////////////////
     const { id } = req.params
-    bookModel.findOne({ AuthorId: id }, (err, book) => {
+    bookModel.findOne({ authorId: id }, (err, book) => {
         if (err) {
             return res.json({ Error: "DB Error"})
         } else if (!book) {
             // console.log(book);
             delAuthor(id, res)
         } else {
-            return res.json({Error:"There's is abook related to this author, you can't delete this author"})
+            return res.json({message:"There's is abook related to this author, you can't delete this author"})
         }
     });
 
@@ -109,8 +115,8 @@ if(oldAuthor.image){
 
 ////////////// Deletig the author  //////////////////
     authorModel.deleteOne({_id:id}, (err, delAuthor) => {
-        if (!err) return res.status(200).json(delAuthor)
-        // return res.status(500).json({Error: "can't delete this author"})
+        if (!err) return res.status(200).json({message: "Author deleted successfully"})
+        return res.status(500).json({Error: "Error deleting this author"})
     })
 }
 } 
