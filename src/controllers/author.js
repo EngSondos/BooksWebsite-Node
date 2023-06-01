@@ -120,4 +120,28 @@ async function findAuthor(id) {
     return author;
 }
 
-module.exports = {getAllAuthors, getAuthorById, addAuthor, updateAuthor, checkAuthorexistence}
+
+function autherbooks(req,res){
+
+    const { id } = req.params;
+   bookModel.find({ authorId: id },(error,books)=>{
+
+    if (error) {
+      return res.json(error);
+    }
+
+      if (!books) {
+                return res.status(404).json({ message: 'no books associated to this author' });
+              }
+              return res.status(200).json(books)
+            }).populate('authorId')
+          
+
+          }
+
+
+
+
+
+
+module.exports = {getAllAuthors, getAuthorById, addAuthor, updateAuthor, checkAuthorexistence,autherbooks}
