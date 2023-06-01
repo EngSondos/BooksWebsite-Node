@@ -26,7 +26,7 @@ async function addReview(req, res) {
 
 
        bookModel.updateOne(
-    { _id: bookId, "reviews.userId": userId },
+    { _id: bookId },
     {
       $push: {
         reviews: { rating, review, userId },
@@ -48,10 +48,10 @@ async function addReview(req, res) {
 async function updateReviewByUserId(req, res) {
 const bookId = req.params.id;
 const userId = req.params.userId;
-const { rating, review } = req.body;
+const { rating } = req.body;
 
 
-const { error } = reviewValidate({ rating, review });
+const { error } = reviewValidate({ rating});
 if (error) {
   return res.status(400).json({ error: error.details[0].message });
 }
@@ -59,7 +59,7 @@ if (error) {
  bookModel.updateOne(
   
   { 'reviews': { $elemMatch: { 'userId': userId } } ,_id:bookId}, 
-  {$set:{reviews:{rating:rating,userId:userId,review:review}}}
+  {$set:{reviews:{rating:rating,userId:userId}}}
 ).populate('reviews.userId')
 
 .then(result=>{
