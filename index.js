@@ -6,6 +6,7 @@ const bookRouter = require('./src/routes/book')
 const {categoryModel} =require('./src/models/category')
 const {authorModel} =require('./src/models/author')
 const users = require("./src/routes/user")
+const bookUserRouter =require('./src/routes/userBook');
 const app = express()
 app.use(express.json())
 
@@ -35,6 +36,7 @@ app.use('/category',categoryRouter)
 app.use('/review',reviewRouter)
 app.use('/book',bookRouter)
 app.use('/author', authorRouter);
+app.use('/mybook',bookUserRouter)
 app.use('/',users);
 
 

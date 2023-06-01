@@ -1,4 +1,5 @@
-module.exports = {getuserBooks,updateStatus,addStatus,getuserBooksbyStatus}
+module.exports = {getuserBooks,updateStatus,addStatus,getuserBooksbyStatus,getStatusOfUserBook}
+const { func } = require('joi');
 const {bookModel, statusValidate}  = require('../models/book')
 
 function getuserBooks(request,respone)
@@ -6,12 +7,12 @@ function getuserBooks(request,respone)
   const {userId} = request.params 
     bookModel.find( { 'statususers': { $elemMatch: { 'userId': userId } }},(error,bookList)=>{
       if(error){
-        return respone.status('500').json({"message":"Some Thing Wrong!!"});
+        return respone.status('500').json({"error":"Some Thing Wrong!!"});
       }else{
         respone.json(bookList)
 
       }
-    })
+    }).populate('authorId')
        
 }
 function getuserBooksbyStatus(request,respone)
@@ -21,10 +22,11 @@ function getuserBooksbyStatus(request,respone)
   const{status} = request.params 
     bookModel.find( { 'statususers': { $elemMatch: { 'userId': userId,'status':status } }},(error,bookList)=>{
       if(error){
-        return respone.status('500').json({"message":"Some Thing Wrong!!"});
+        return respone.status('500').json({"error":"Some Thing Wrong!!"});
       }
-        respone.json(bookList)
-    })
+      console.log(bookList)
+        return respone.json(bookList)
+    }).populate('authorId')
        
 }
 
@@ -33,7 +35,7 @@ async function addStatus(request,respone){
   const {error}= statusValidate({...request.body})
   if(error)
   {
-      return respone.json({error:error})
+      return respone.json({error:error.details[0].message})
   }
     const {userId} = request.params 
     const {status} =request.body 
@@ -78,4 +80,23 @@ function updateStatus(request,respone){
       .catch(err => {
         console.error(err);
       });
+}
+
+ function getStatusOfUserBook(request,respone)
+{
+  const {userId} = request.params 
+  const {bookId} =request.params
+  bookModel.findOne(
+    { 'statususers': { $elemMatch: { 'userId': userId } } ,_id:bookId}
+  ,async (error,book)=>
+  {
+    if(error){
+      return respone.status('500').json({"error":"Some Thing Wrong!!"});
+    }else{
+      const status = await book.statususers.find(user => user.userId == userId).status;
+      console.log(status)
+      respone.json({"status":status})
+
+  }
+  })
 }
