@@ -9,7 +9,7 @@ async function addReview(req, res) {
 
         
   const bookId = req.params.id;
-  const userId = req.params.userId;
+  const userId = request.user.user_id
   const { rating, review } = req.body;
 
 
@@ -48,7 +48,7 @@ async function addReview(req, res) {
 
 async function updateReviewByUserId(req, res) {
 const bookId = req.params.id;
-const userId = req.params.userId;
+const userId = request.user.user_id
 const { rating } = req.body;
 
 
