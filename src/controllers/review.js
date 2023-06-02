@@ -1,4 +1,5 @@
 
+const { func } = require('joi');
 const {bookModel,reviewValidate} = require('../models/book')
 
 
@@ -71,8 +72,33 @@ if (error) {
 })
 }
 
+function avargeRateForBook(request,respone)
+{
+  const {bookId} =request.params
+  bookModel.findOne(
+    { _id:bookId}
+  ,async (error,book)=>
+  {
+    if(error){
+      return respone.status('500').json({"error":"Some Thing Wrong!!"});
+    }else if(book.reviews.length){
+      sum=0
+      ratingCount=0
+      for(let i =0;i< book.reviews.length;i++){
+        sum += book.reviews[i].rating;      
+        ratingCount+=1;  
+      }
+      console.log(sum/ratingCount)
+      avgRate = sum/ratingCount;
+      return respone.json({"avgRate":avgRate})
+  }else {
+    respone.json({"avgRate":0})
+
+  }
+  })
+}
 
 
- module.exports = {addReview,updateReviewByUserId}
+ module.exports = {addReview,updateReviewByUserId,avargeRateForBook}
 
  
