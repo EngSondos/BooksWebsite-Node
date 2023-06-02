@@ -8,7 +8,7 @@ title : {type: String , require: true},
 image : {type: String , require: true},
 categoryId : { type: mongoose.Schema.Types.ObjectId , ref:"categories",require: true},
  authorId : { type: mongoose.Schema.Types.ObjectId , ref:"authors",require: true},
-review :[
+reviews :[
   {
       rating : {type: Number,default: null},
       userId : { type: mongoose.Schema.Types.ObjectId , ref:"users",require: true},
@@ -34,7 +34,6 @@ function bookValidate(bookSchema) {
       'any.required': 'Title is required'
     })
     ,
-    image: Joi.string(),
     categoryId : Joi.ObjectId().required(),
     authorId : Joi.ObjectId().required(),
      reviews : Joi.object(),

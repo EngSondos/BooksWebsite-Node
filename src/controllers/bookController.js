@@ -19,9 +19,13 @@ function getBook(request,respone)
 
     bookModel.find({_id:id},(error,BookData)=>{
         if(!error){
-            respone.json(BookData)
-        }else
-         respone.json(error)
+            console.log(BookData[0]);
+            return respone.json(BookData[0])
+        }else{
+            console.log(error)
+            return respone.json(error)
+
+        }
         }).populate(['authorId','categoryId'])
 
 
@@ -29,14 +33,16 @@ function getBook(request,respone)
 
 function addBook(request,respone)
 {
+   
     const {error}= bookValidate({...request.body})
     if(error)
     {
+        console.log(error)
+
         return respone.json({error:error})
     }
     let newBook ={
         title: request.body.title,
-        description: request.body.description,
         authorId: request.body.authorId,
         categoryId: request.body.categoryId,
     }
@@ -48,8 +54,10 @@ function addBook(request,respone)
         console.log(BookData)
         if(!error){
            return respone.json({"message":"Book Created Successfully"})
-        }else
-        respone.json({"erorr":error})
+        }else{
+            respone.json({"erorr":error})
+            console.log(error)
+        }
     })
 }
 
@@ -82,9 +90,13 @@ async function updateBook(request,respone)
 
     bookModel.updateOne({_id:id},{$set: newBook},(error)=>{
         if(!error){
-            respone.json({"message":"Book Updated Successfully"})
+            return respone.json({"message":"Book Updated Successfully"})
         }else
-        respone.json(error)
+        {
+            console.log(error)
+            return respone.json(error)
+
+        }
     })
 }
 
@@ -103,9 +115,15 @@ async function deleteBook(request,respone)
 
     bookModel.deleteOne({_id:id},(error)=>{
         if(!error){
+            console.log('delete')
             return respone.json({"message":"Book Deleted Successfully"})
-        }else
-       return respone.json(error)
+        }else{
+            console.log('not delete')
+
+            return respone.json(error)
+
+        }
+      
     })
 }
 
