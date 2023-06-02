@@ -8,6 +8,9 @@ const {authorModel} =require('./src/models/author')
 const users = require("./src/routes/user")
 const bookUserRouter =require('./src/routes/userBook');
 const app = express()
+const cors= require('cors')
+
+app.use(cors())
 app.use(express.json())
 
 //for images 

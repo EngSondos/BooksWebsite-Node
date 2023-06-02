@@ -83,7 +83,7 @@ async function updateAuthor(req, res) {
 async function checkAuthorexistence(req, res) {
 ////////////// Checking if the author has abook in database //////////////////
     const { id } = req.params
-    bookModel.findOne({ AuthorId: id }, (err, book) => {
+    bookModel.findOne({ authorId: id }, (err, book) => {
         if (err) {
             return res.json({ Error: "DB Error"})
         } else if (!book) {

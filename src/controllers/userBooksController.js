@@ -4,7 +4,7 @@ const {bookModel, statusValidate}  = require('../models/book')
 
 function getuserBooks(request,respone)
 {
-  const {userId} = request.params 
+  const {userId} = request.user.user_id
     bookModel.find( { 'statususers': { $elemMatch: { 'userId': userId } }},(error,bookList)=>{
       if(error){
         return respone.status('500').json({"error":"Some Thing Wrong!!"});
