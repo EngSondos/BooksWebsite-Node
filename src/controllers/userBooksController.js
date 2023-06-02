@@ -92,11 +92,16 @@ function updateStatus(request,respone){
   {
     if(error){
       return respone.status('500').json({"error":"Some Thing Wrong!!"});
-    }else{
-      const status = await book.statususers.find(user => user.userId == userId).status;
-      console.log(status)
-      respone.json({"status":status})
-
+    }else {
+      let status;
+      let rating=0;
+      if(book.statususers.length){
+         status = await book.statususers.find(user => user.userId == userId).status;
+      } if(book.reviews.length){
+         rating = await book.reviews.find(user=>user.userId==userId).rating
+      }
+      respone.json({status,rating})
   }
   })
 }
+
