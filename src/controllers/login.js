@@ -23,7 +23,7 @@ async  function userLogin(req , res ) {
   
 
   // Validate if user exist in our database
-  const user = await userModel.findOne({ email , username  });
+  const user = await userModel.findOne({ email   });
  
   if (user && (await bcrypt.compare(password, user.password))) {
     // Create token
@@ -39,6 +39,8 @@ async  function userLogin(req , res ) {
     //  user.token = token;
    return res.json({
       token : token
+      ,userId:user._id,
+      admin : user.isAdmin
     })
     // user
     // res.status(200).json(user);
