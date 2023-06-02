@@ -6,11 +6,11 @@ const {upload } = require('../media/media')
 const auth = require('../../middelware/auth')
 
 router.get('/',auth, getAllAuthors)
-router.get('/:id', getAuthorById)
-router.post('/', upload.single("image"),addAuthor)
-router.put('/:id', upload.single("image"), updateAuthor)
-router.delete('/:id', checkAuthorexistence)
-router.get('/:id/book',autherbooks)
+router.get('/:id',auth, getAuthorById)
+router.post('/',auth, upload.single("image"),addAuthor)
+router.put('/:id',auth, upload.single("image"), updateAuthor)
+router.delete('/:id',auth, checkAuthorexistence)
+router.get('/:id/book', auth, autherbooks)
 
 
 module.exports = router
