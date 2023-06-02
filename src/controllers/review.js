@@ -19,11 +19,7 @@ async function addReview(req, res) {
   }
 
 
-  const userreview = await bookModel.findOne({'reviews.userId': userId ,_id:bookId});
-    if(userreview)
-    {
-     return await updateReviewByUserId(req,res)
-    }
+
 
 
        bookModel.updateOne(
@@ -42,6 +38,52 @@ async function addReview(req, res) {
       console.error(err)
   })
 }
+
+
+
+
+
+
+
+
+
+
+// async function addReview(req, res) {
+//   const bookId = req.params.id;
+//   const userId = request.user.user_id;
+//   const { rating, review } = req.body;
+
+//   const { error } = reviewValidate({ rating, review });
+//   if (error) {
+//     return res.status(400).json({ error: error.details[0].message });
+//   }
+
+//   const existingReview = await bookModel.findOne({
+//     _id: bookId,
+//     reviews: { $elemMatch: { userId } },
+//   });
+
+//   if (existingReview) {
+//     await bookModel.updateOne(
+//       { _id: bookId, 'reviews.userId': userId },
+//       { $set: { 'reviews.$.rating': rating } }
+//     );
+//   } else {
+//     await bookModel.updateOne(
+//       { _id: bookId },
+//       { $push: { reviews: { rating, review, userId } } }
+//     );
+//   }
+
+//   const book = await bookModel.findById(bookId).populate('reviews.userId');
+//   res.json(book);
+// }
+
+
+
+
+
+
 
 
 
