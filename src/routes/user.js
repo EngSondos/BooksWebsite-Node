@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 router.post("/register", userRegister);
 
-router.post("/login",admin ,userLogin)
+router.post("/login" ,userLogin)
 
 module.exports = router;
 
