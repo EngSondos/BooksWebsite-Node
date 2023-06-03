@@ -108,7 +108,7 @@ if (error) {
  bookModel.updateOne(
   
   { 'reviews': { $elemMatch: { 'userId': userId } } ,_id:bookId}, 
-  {$set:{reviews:{rating:rating,userId:userId,review:review}}}
+  {$set:{'reviews.$':{rating:rating,userId:userId,review:review}}}
 ).populate('reviews.userId')
 
 .then(result=>{

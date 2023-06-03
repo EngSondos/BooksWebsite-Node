@@ -30,9 +30,7 @@ async  function userLogin(req , res ) {
     const token = jwt.sign(
       { user_id: user._id, email , password  },
       process.env.TOKEN_KEY,
-      {
-        expiresIn: "1h",
-      }
+     
     );
 
     // save user token
