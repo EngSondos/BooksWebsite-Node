@@ -12,19 +12,19 @@ async   function userRegister(req , res) {
         // Our register logic starts here
         try {
           // Get user input
-          const {username, email, password ,isAdmin} = req.body;
+          const {username, email, password } = req.body;
           const {error} = userValidate(req.body) ;
           // Validate user input
-          // if (error) {
-          //   return res.status(404).send(error.details[0].message)
-          // }
+          if (error) {
+            return res.status(404).send(error.details[0].message)
+          }
       
           // check if user already exist
           // Validate if user exist in our database
           const oldUser = await userModel.findOne({ email });
       
           if (oldUser) {
-            return res.status(409).send("User Already Exist. Please Login");
+            return res.status(409).json({"message":"User Already Exist. Please Login"});
           }
       
           //Encrypt user password
@@ -37,7 +37,6 @@ async   function userRegister(req , res) {
            
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
-            isAdmin
           },
         
        (error,userData)=>{

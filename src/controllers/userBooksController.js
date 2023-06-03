@@ -18,7 +18,7 @@ function getuserBooks(request,respone)
 function getuserBooksbyStatus(request,respone)
 {
   
-  const {userId} = request.params
+  const {userId} = request.user.user_id
   const{status} = request.params 
     bookModel.find( { 'statususers': { $elemMatch: { 'userId': userId,'status':status } }},(error,bookList)=>{
       if(error){
@@ -37,7 +37,7 @@ async function addStatus(request,respone){
   {
       return respone.json({error:error.details[0].message})
   }
-    const {userId} = request.params 
+  const {userId} = request.user.user_id
     const {status} =request.body 
     const {bookId} =request.params
     const userStatus = await bookModel.findOne({'statususers.userId': userId ,_id:bookId});
@@ -66,7 +66,7 @@ function updateStatus(request,respone){
   {
       return respone.json({error:error})
   }
-    const {userId} = request.params 
+  const {userId} = request.user.user_id
     const {status} =request.body 
     const {bookId} =request.params
     bookModel.updateOne(
@@ -84,7 +84,7 @@ function updateStatus(request,respone){
 
  function getStatusOfUserBook(request,respone)
 {
-  const {userId} = request.params 
+  const {userId} = request.user.user_id
   const {bookId} =request.params
   bookModel.findOne(
     { 'statususers': { $elemMatch: { 'userId': userId } } ,_id:bookId}
@@ -97,8 +97,10 @@ function updateStatus(request,respone){
       let rating=0;
       if(book.statususers.length){
          status = await book.statususers.find(user => user.userId == userId).status;
-      } if(book.reviews.length){
-         rating = await book.reviews.find(user=>user.userId==userId).rating
+      } 
+      console.log(book.reviews[0].rating)
+      if(book.reviews.length){
+         rating = await book.reviews.find(user=>user.userId==userId)?.rating
       }
       respone.json({status,rating})
   }

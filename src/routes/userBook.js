@@ -4,8 +4,8 @@ let userBookController = require('../controllers/userBooksController')
 const auth = require('../../middelware/auth')
 
 //remove userId
-router.post('/:userId/:bookId',userBookController.addStatus)
+router.post('/:bookId',auth ,userBookController.addStatus)
 router.get('/',auth,userBookController.getuserBooks)
-router.get('/:status/:userId',userBookController.getuserBooksbyStatus)
-router.get('/status/:userId/:bookId',userBookController.getStatusOfUserBook);
+router.get('/:status',auth,userBookController.getuserBooksbyStatus)
+router.get('/status/:bookId',auth,userBookController.getStatusOfUserBook);
 module.exports =router
