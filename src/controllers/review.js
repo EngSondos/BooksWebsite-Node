@@ -51,46 +51,6 @@ async function addReview(req, res) {
 
 
 
-// async function addReview(req, res) {
-//   const bookId = req.params.id;
-//   const userId = request.user.user_id;
-//   const { rating, review } = req.body;
-
-//   const { error } = reviewValidate({ rating, review });
-//   if (error) {
-//     return res.status(400).json({ error: error.details[0].message });
-//   }
-
-//   const existingReview = await bookModel.findOne({
-//     _id: bookId,
-//     reviews: { $elemMatch: { userId } },
-//   });
-
-//   if (existingReview) {
-//     // Update existing review
-//     await bookModel.updateOne(
-//       { _id: bookId, 'reviews.userId': userId },
-//       { $set: { 'reviews.$.rating': rating } }
-//     );
-//   } else {
-//     // Add new review
-//     await bookModel.updateOne(
-//       { _id: bookId },
-//       { $push: { reviews: { rating, review, userId } } }
-//     );
-//   }
-
-//   // Return updated book object
-//   const book = await bookModel.findById(bookId).populate('reviews.userId');
-//   res.json(book);
-// }
-
-
-
-
-
-
-
 
 
 
